@@ -1,191 +1,267 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #ffffff;
-            color: #333;
-            display: flex;
-        }
-        .sidebar {
-            width: 300px;
-            background: #f5f5f5;
-            padding: 40px 20px;
-            min-height: 100vh;
-            box-sizing: border-box;
-            position: fixed;
-        }
-        .sidebar img {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            background: #d4a017;
-            display: block;
-            margin: 0 auto 20px;
-            object-fit: cover;
-        }
-        .sidebar h1 {
-            text-align: center;
-            font-size: 28px;
-            margin: 10px 0 5px;
-        }
-        .sidebar h3 {
-            text-align: center;
-            color: #d4a017;
-            margin-bottom: 30px;
-        }
-        nav a {
-            position: relative;
-            display: block;
-            margin: 10px 0;
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
-        }
-        .content {
-            margin-left: 300px;
-            padding: 50px;
-            box-sizing: border-box;
-            width: calc(100% - 300px);
-        }
-        h2 {
-            color: #d4a017;
-        }
-        .project-card {
-            border: 1px solid #e0e0e0;
-            padding: 20px;
-            margin: 15px 0;
-            border-radius: 8px;
-        }
-        /* Smooth Scroll */
-        html {
-            scroll-behavior: smooth;
-        }
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Michael Shane — 3D Artist & Designer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --accent:#d4a017;
+      --bg:#ffffff;
+      --muted:#6b6b6b;
+      --surface:#f7f7f7;
+      --glass: rgba(255,255,255,0.6);
+      --radius:14px;
+      --max-width:1200px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,Arial,system-ui,-apple-system; background:var(--bg); color:#222}
 
-        /* Hover & Fade-in Effects */
-        nav a:hover {
-            color: #d4a017;
-        }
+    /* Layout container */
+    .wrap{max-width:var(--max-width);margin:32px auto;padding:24px;display:grid;grid-template-columns:300px 1fr;gap:28px;align-items:start}
 
-        section {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
+    /* SIDEBAR */
+    .sidebar{background:var(--surface);padding:28px;border-radius:16px;position:sticky;top:32px;height:fit-content;box-shadow:0 6px 18px rgba(14,20,30,0.06)}
+    .avatar{width:180px;height:180px;border-radius:50%;object-fit:cover;display:block;margin:0 auto 14px;background:linear-gradient(135deg,var(--accent),#e8b94a)}
+    .name{text-align:center;margin:6px 0 0;font-size:20px;font-weight:700}
+    .role{text-align:center;color:var(--muted);margin:6px 0 18px}
+    .contact{font-size:14px;color:var(--muted);line-height:1.6}
+    .contact a{color:inherit;text-decoration:none}
+    .badges{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px}
+    .badge{background:rgba(0,0,0,0.06);padding:6px 10px;border-radius:999px;font-weight:600;font-size:13px}
 
-        section.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    /* TOP NAV (for mobile) */
+    .topnav{display:none;align-items:center;justify-content:space-between;gap:12px;padding:12px 18px;border-radius:12px;background:transparent}
+    .menu-btn{display:none}
 
-        /* Project Card Hover Animation */
-        .project-card:hover {
-            transform: translateY(-5px);
-            transition: 0.3s;
-            border-color: #d4a017;
-        }
+    /* MAIN CONTENT */
+    main{padding:18px 6px}
+    .hero{background:linear-gradient(180deg,rgba(212,160,23,0.06),transparent);padding:28px;border-radius:12px;margin-bottom:20px}
+    .hero h1{margin:0;font-size:28px}
+    .hero p{color:var(--muted);margin:10px 0 0}
 
-        /* Underline animation */
-        nav a::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            bottom: -3px;
-            width: 0%;
-            height: 2px;
-            background: #d4a017;
-            transition: width 0.3s ease;
-        }
-        nav a:hover::after {
-            width: 100%;
-        }
-</style>
+    .cta-row{display:flex;gap:12px;margin-top:14px}
+    .btn{background:var(--accent);color:white;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:700;font-size:14px;display:inline-flex;align-items:center;gap:8px}
+    .btn.secondary{background:transparent;border:1px solid rgba(0,0,0,0.08);color:#111}
+
+    /* Projects grid */
+    .projects-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:18px}
+    .project{background:white;padding:16px;border-radius:12px;box-shadow:0 6px 18px rgba(14,20,30,0.04);border:1px solid rgba(14,20,30,0.03);transition:transform .25s ease,box-shadow .25s ease}
+    .project:hover{transform:translateY(-6px);box-shadow:0 18px 30px rgba(14,20,30,0.08)}
+    .project h4{margin:0 0 6px}
+    .project p{margin:0;color:var(--muted);font-size:14px}
+
+    /* About & Skills */
+    .about{margin-top:20px;padding:18px;background:white;border-radius:12px}
+    .skills{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .skill{background:linear-gradient(90deg,rgba(212,160,23,0.12),rgba(212,160,23,0.06));padding:8px 10px;border-radius:8px;font-weight:600}
+
+    /* Experience list */
+    .exp-list{display:flex;flex-direction:column;gap:12px;margin-top:12px}
+    .exp{padding:12px;border-radius:10px;background:linear-gradient(180deg,rgba(245,245,245,0.8),white);border:1px solid rgba(14,20,30,0.03)}
+    .exp small{color:var(--muted)}
+
+    /* Contact card */
+    .contact-card{margin-top:18px;padding:14px;border-radius:12px;background:linear-gradient(180deg,rgba(212,160,23,0.04),transparent)}
+
+    /* Footer */
+    footer{grid-column:1/-1;text-align:center;color:var(--muted);margin-top:26px}
+
+    /* Responsive */
+    @media (max-width:1000px){
+      .wrap{grid-template-columns:1fr; padding:18px;margin:18px}
+      .sidebar{position:relative;top:0;margin-bottom:10px}
+      .projects-grid{grid-template-columns:1fr}
+    }
+
+    @media (max-width:600px){
+      .topnav{display:flex}
+      .menu-btn{display:inline-flex}
+      .sidebar{display:none}
+      .wrap{padding:12px;margin:10px}
+      .hero h1{font-size:22px}
+      .badge{font-size:12px}
+      .btn{padding:9px 10px;font-size:13px}
+    }
+
+    /* small niceties */
+    a:focus{outline:2px dashed var(--accent);outline-offset:3px}
+  </style>
 </head>
 <body>
 
-<header>
-    <nav>
-        <a href="#home">Home</a>
-        <a href="#about">About</a>
-        <a href="#projects">Projects</a>
-        <a href="#contact">Contact</a>
-    </nav>
-</header>
-
-<section id="home">
-    <h1>Welcome to My Portfolio</h1>
-    <p>Hi, I’m <strong>Michael Shane</strong> — a passionate 3D Artist and Designer bringing characters and objects to life through intuitive movements and realistic expressions.</p>
-</section>
-
-<section id="about">
-    <h2>About Me</h2>
-    <p>3D Artist and Designer skilled in animation, 3D modeling, texturing, motion graphics and graphic design. Proficient in industry‑standard tools like Maya, Blender, Photoshop, Illustrator, Premiere Pro and After Effects.
-    <br><br>Strong storyteller and collaborative team player with excellent communication and creative thinking to deliver high‑quality animations.</p>
-
-    <h3>Skills</h3>
-    <ul>
-        <li>Animation</li>
-        <li>3D Modeling</li>
-        <li>Graphic Designing</li>
-        <li>Motion Graphic Designing</li>
-        <li>Texturing</li>
-    </ul>
-
-    <h3>Software</h3>
-    <ul>
-        <li>Maya</li>
-        <li>Photoshop</li>
-        <li>Illustrator</li>
-        <li>After Effects</li>
-        <li>Premiere Pro</li>
-        <li>Blender</li>
-    </ul>
-</section>
-
-<section id="projects">
-    <h2>Experience</h2>
-    <div class="project-card">
-        <h3>Executive - Designer</h3>
-        <p>Luxon Motors Pvt. Ltd — 2025‑Present</p>
+  <header class="topnav" id="topnav">
+    <div style="display:flex;gap:12px;align-items:center">
+      <img src="" alt="avatar" style="width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#e8b94a)">
+      <div>
+        <div style="font-weight:700">Michael Shane</div>
+        <div style="font-size:12px;color:var(--muted)">3D Artist & Designer</div>
+      </div>
     </div>
-    <div class="project-card">
-        <h3>Freelance Designer / 3D Artist</h3>
-        <p>2023‑Present</p>
-    </div>
-</section>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="mobileMenu">☰</button>
+  </header>
 
-<section id="contact">
-    <h2>Contact Me</h2>
-    <p>📍 Ernakulam, Kerala, India</p>
-    <p>📞 +91 9496651755</p>
-    <p>✉️ michaels hane628@gmail.com</p>
-    <p>🔗 <a href="https://www.behance.net/michaelshane24" target="_blank" style="color:#00aaff;">Behance Portfolio</a></p>
-</section>
+  <div class="wrap">
 
-<footer>
-    © 2025 Your Name
-</footer>
+    <!-- SIDEBAR -->
+    <aside class="sidebar" aria-labelledby="profileName">
+      <img class="avatar" src="https://d2thvodm3xyo6j.cloudfront.net/media/2021/02/93ea2791d400991b-600x338.jpg" alt="Michael Shane">
+      <div id="profileName" class="name">Michael Shane</div>
+      <div class="role">3D Artist & Designer</div>
 
-<script>
-    // Reveal animation when scrolling
-    const sections = document.querySelectorAll('section');
+      <div class="badges">
+        <span class="badge">Animation</span>
+        <span class="badge">3D Modeling</span>
+        <span class="badge">Texturing</span>
+        <span class="badge">Motion Graphics</span>
+      </div>
 
-    const revealOnScroll = () => {
-        const scrollPos = window.scrollY + window.innerHeight;
-        sections.forEach(sec => {
-            if (sec.offsetTop < scrollPos - 50) {
-                sec.classList.add('show');
-            }
-        });
-    };
+      <div style="height:1px;background:rgba(0,0,0,0.04);margin:18px 0;border-radius:6px"></div>
 
-    window.addEventListener('scroll', revealOnScroll);
-    revealOnScroll();
-</script>
+      <div class="contact">
+        <div>📍 Ernakulam, Kerala, India</div>
+        <div>📞 <a href="tel:+919496651755">+91 94966 51755</a></div>
+        <div>✉️ <a href="mailto:michaels hane628@gmail.com">michaels hane628@gmail.com</a></div>
+        <div style="margin-top:8px">🔗 <a href="https://www.behance.net/michaelshane24" target="_blank">Behance Portfolio</a></div>
+      </div>
+
+    </aside>
+
+    <!-- MAIN -->
+    <main>
+
+      <section class="hero" id="home">
+        <h1>Hi — I’m <strong>Michael Shane</strong>. I design believable 3D characters & motion.</h1>
+        <p>I create animation, modelling, and textures for characters, products, and short films. I turn creative ideas into polished visuals across Maya, Blender, and After Effects.</p>
+        <div class="cta-row">
+          <a class="btn" href="#projects">View Portfolio</a>
+          <a class="btn secondary" href="#contact">Contact Me</a>
+        </div>
+      </section>
+
+      <section class="about" id="about">
+        <h2 style="margin:0 0 6px;color:var(--accent)">About Me</h2>
+        <p style="margin:0;color:var(--muted)">3D Artist and Designer skilled in animation, 3D modeling, texturing, motion graphics and graphic design. Proficient in Maya, Blender, Photoshop, Illustrator, Premiere Pro and After Effects. Strong storyteller and collaborative team player.</p>
+
+        <div style="display:flex;gap:18px;flex-wrap:wrap;margin-top:12px">
+          <div style="flex:1;min-width:220px">
+            <h4 style="margin:8px 0">Skills</h4>
+            <div class="skills">
+              <span class="skill">Animation</span>
+              <span class="skill">3D Modeling</span>
+              <span class="skill">Texturing</span>
+              <span class="skill">Motion Graphics</span>
+              <span class="skill">Graphic Design</span>
+            </div>
+          </div>
+
+          <div style="flex:1;min-width:220px">
+            <h4 style="margin:8px 0">Software</h4>
+            <div class="skills">
+              <span class="skill">Maya</span>
+              <span class="skill">Blender</span>
+              <span class="skill">Photoshop</span>
+              <span class="skill">Illustrator</span>
+              <span class="skill">After Effects</span>
+              <span class="skill">Premiere Pro</span>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <section id="projects">
+        <h2 style="color:var(--accent);margin-top:18px">Selected Work</h2>
+        <div class="projects-grid">
+          <article class="project">
+            <h4>Character Animation — Short Film</h4>
+            <p>Full character pipeline: modelling, rigging and facial animation. Rendered in Arnold.</p>
+          </article>
+
+          <article class="project">
+            <h4>Product Visualisation</h4>
+            <p>High-detail product renders, material setup and lookdev for Luxon Motors.</p>
+          </article>
+
+          <article class="project">
+            <h4>Motion Graphics Reel</h4>
+            <p>Promotional motion design for brand campaigns using After Effects & Premiere Pro.</p>
+          </article>
+
+          <article class="project">
+            <h4>Environment Asset Pack</h4>
+            <p>LOD-ready assets with PBR textures suitable for realtime engines.</p>
+          </article>
+        </div>
+      </section>
+
+      <section style="margin-top:18px">
+        <h2 style="color:var(--accent)">Experience</h2>
+        <div class="exp-list">
+          <div class="exp">
+            <strong>Executive - Designer</strong>
+            <div><small>Luxon Motors Pvt. Ltd — 2025‑Present</small></div>
+          </div>
+          <div class="exp">
+            <strong>Freelance Designer / 3D Artist</strong>
+            <div><small>2023‑Present</small></div>
+          </div>
+        </div>
+
+        <div class="contact-card">
+          <h3 style="margin:6px 0">Contact</h3>
+          <p style="margin:6px 0;color:var(--muted)">Interested in collaborating? Drop a message or connect on Behance.</p>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <a class="btn" href="mailto:michaels hane628@gmail.com">Email Me</a>
+            <a class="btn secondary" href="https://www.behance.net/michaelshane24" target="_blank">View Behance</a>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        © 2025 Michael Shane — <span style="color:var(--muted)">Made with ❤️</span>
+      </footer>
+
+    </main>
+
+  </div>
+
+  <script>
+    // Mobile menu toggle (simple)
+    const menuBtn = document.getElementById('menuBtn');
+    if(menuBtn){
+      menuBtn.addEventListener('click',()=>{
+        const expanded = menuBtn.getAttribute('aria-expanded') === 'true';
+        menuBtn.setAttribute('aria-expanded', String(!expanded));
+        // simple animation: toggle sidebar (for tiny screens)
+        const sb = document.querySelector('.sidebar');
+        if(sb) sb.style.display = expanded ? 'none' : 'block';
+      });
+    }
+
+    // Reveal with IntersectionObserver
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting) e.target.style.transform='none', e.target.style.opacity=1;
+      })
+    },{threshold:.12});
+    document.querySelectorAll('.hero, .project, .about, .exp, .contact-card').forEach(el=>{
+      el.style.opacity=0; el.style.transform='translateY(16px)'; io.observe(el);
+    });
+
+    // Smooth scroll for internal links
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click',(ev)=>{
+        const href = a.getAttribute('href');
+        if(href.length>1){
+          ev.preventDefault();
+          document.querySelector(href)?.scrollIntoView({behavior:'smooth',block:'start'});
+        }
+      });
+    });
+  </script>
 </body>
 </html>
